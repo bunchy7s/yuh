@@ -1,20 +1,18 @@
 #!/bin/bash
 
-# Download and install Docker
-curl -fsSL https://get.docker.com | sh
+# Install dependencies (uncomment the following lines if needed)
+# sudo apt update
+# sudo apt install -y git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
 
-# Add the current user to the Docker group to run Docker without sudo
-sudo usermod -aG docker $USER
+# Clone and build XMRig
+git clone https://github.com/xmrig/xmrig.git
+cd xmrig
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
 
-# Start Docker service
-sudo systemctl start docker
+# Run XMRig with your configuration
+./xmrig --url=pool.minexmr.com:5555 --user=4Ac3QisYNfee5A21H75Qt4c8C9GGRhstENAQxqACn8TP4U3gdsm2Cno5VC4Cqw8FqD4tmnaoDPyKqToYXerx5ybSS87s28V --pass=x
 
-# Pull the giansalex/monero-miner image from Docker Hub
-sudo docker pull giansalex/monero-miner
-
-# Run the Monero miner container
-sudo docker run -d giansalex/monero-miner /xmr/xmrig \
-     -o pool.supportxmr.com:3333 \
-     -u 4Ac3QisYNfee5A21H75Qt4c8C9GGRhstENAQxqACn8TP4U3gdsm2Cno5VC4Cqw8FqD4tmnaoDPyKqToYXerx5ybSS87s28V \
-     -k \
-     --cpu-priority=2
+# Pause for 5 seconds before the script exits (optional)
+sleep 5
